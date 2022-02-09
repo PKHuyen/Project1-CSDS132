@@ -1,0 +1,28 @@
+//Task 3 project 1
+public class Date {
+  private int day;
+  private int month;
+  private int year;
+  
+  public int getDay() {
+    return day;
+  }
+  
+  public int getMonth() {
+    return month;
+  }
+  
+  public int getYear() {
+    return year;
+  }
+  
+  public String January (int year) {
+    day = (int)(Math.random() * 31 + 1);
+    month = 1;
+    return (day + "/" + month + "/" + year);
+  }
+  public void incrementDay() {
+    this.day = day + 1;
+    //not finished  if (day > 31) ; 
+  }
+}
