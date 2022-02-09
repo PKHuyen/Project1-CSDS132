@@ -17,10 +17,22 @@ public class Stock {
   //A field that stored commission
   private double commission;
   
-  
+  //constructor 1
+  public Stock(String tickerSymbol, double currentPrice){
+    this.tickerSymbol = tickerSymbol;
+    this.price = currentPrice;
+  }
+
+  //constructor 2
+  public Stock(String companyName, String tickerSymbol, double currentPrice){
+    this.companyName = companyName;
+    this.tickerSymbol = tickerSymbol;
+    this.price = currentPrice;
+  }
+
   // getCompanyName return company name
   public String getCompanyName(){
-    return name;
+    return this.name;
   }
   // setCompanyName changes the company name for the stock
   public void setCompanyName(String name) {
@@ -28,7 +40,7 @@ public class Stock {
   }
   //getTickerSympol returns the stock market ticker symbol
   public String getTickerSymbol() {
-    return tickerSymbol;
+    return this.tickerSymbol;
   }
   //setTickerSymbol changes the stock market ticker symbol
   public void setTickerSymbol(String tickerSymbol) {
@@ -36,16 +48,7 @@ public class Stock {
   }
   //getCurrentPrice return the current price for a share of the stock
   public double getCurrentPrice() {
-    return price;
-  }
-  
-  //Constructor 
-  public String getInfo1 (String tickerSymbol, double currentPrice) {
-    return (tickerSymbol + ", " + currentPrice);
-  }
-  
-  public String getInfo2 (String companyName, String tickerSymbol, double currentPrice) {
-    return (companyName + ", " + tickerSymbol + ", " + currentPrice);
+    return this.price;
   }
   
   //setCurrentPrice changes the current price of a share of the stock
@@ -75,6 +78,7 @@ public class Stock {
   }
   //Calculate output money for investors
   public double buy(int numShares, double commission) {
+    this.costBasis += numShares * price + commission;
     return (double)(numShares * price + commission);
   }
   //Calculate sell
@@ -82,11 +86,16 @@ public class Stock {
     if (numShares > this.numShares) 
       return (int)0;
     
-    else if (numShares <this.numShares) {
-      numShares = this.numShares - numShares; //this numShares is previous data
-      return (double)(numShares * price - commission); 
+    else if (numShares <= this.numShares) {
+      int decreasedCostBasis = this.costBasis*(numShares/this.numShares);
+      this.costBasis -= decreasedCostBasis;
+      this.capitalGains += numShares * this.price - commission - decreasedCostBasis;
+      this.numShares = this.numShares - numShares; //this numShares is previous data
+      
+      return (double)(numShares * this.price - commission); 
     }
-    return numShares; //need fix
+    return -1;
+    //return numShares; //need fix
   }
   //Calculate split
   public double split(int ratioNumerator, int ratioDenonimator) {
